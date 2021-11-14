@@ -3,26 +3,26 @@ pragma solidity >=0.4.22 <0.9.0;
 
 contract Faucet {
     // storage variables
-    // recieve function called when you make a transaction tx without a specified name
-    // External function are part of the ccontract interface, i.e can be called via contracts and other tx
-    receive() external payable {}
-    //const instance = await Faucet.deployed()
-    function addFunds() external payable {}
-    // view - function will not alter the storage state
-    // pure - wont even read the storage state
+    address[] public funders;
 
-    // Transactions(generate state changes) and require gas fee
-    // read only call, no gas fee
-    function justTesting() external pure returns(uint) {
-        return 2+2;
+    receive() external payable {}
+    
+    function addFunds() external payable {
+        funders.push(msg.sender);
+    }
+    
+    function getAllFunders() public view returns(address[] memory) {
+        return funders;
     }
 
-    // JSON-RPC http calls to talk to node on the network 
-    
-    
-    
+    // function to get funder at a specific index
+    function getFunderAtIndex(uint8 index) external view returns(address) {
+        address[] memory _funders = getAllFunders();
+        return _funders[index];
+    } 
 }
-
+    // recieve function called when you make a transaction tx without a specified name
+    // External function are part of the ccontract interface, i.e can be called via contracts and other tx
     // Block info
         // Nonce - a hash that when combined with the minHash proofs that
         // the block has gone through proof of work(POW)
@@ -30,3 +30,14 @@ contract Faucet {
 
         // truffle console
         // const instance = await Faucet.deployed()
+        // instance.addFunds({from: accounts[0], value: "2"})
+
+    // view - function will not alter the storage state
+    // pure - wont even read the storage state
+
+    // Transactions(generate state changes) and require gas fee
+    // read only call, no gas fee
+    
+    // JSON-RPC http calls to talk to node on the network 
+    
+    

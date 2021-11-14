@@ -6,6 +6,8 @@ contract Faucet {
     // recieve function called when you make a transaction tx without a specified name
     // External function are part of the ccontract interface, i.e can be called via contracts and other tx
     receive() external payable {}
+    //const instance = await Faucet.deployed()
+    function addFunds() external payable {}
 
     // Block info
     // Nonce - a hash that when combined with the minHash proofs that

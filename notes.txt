@@ -1,0 +1,38 @@
+// instructions of bitecode
+6080604052348015600f57600080fd5b50604580601d6000396000f3fe
+
+60    80   60   40   52   34   80   15   60   0f    57    60    00    80    fd    5b   50     60    45    80    60    1d    60    00    39    60    00    f3   fe
+|_0_||_1_||_2_||_3_||_4_||_5_||_6_||_7_||_8_||_9_||_10_||_11_||_12_||_13_||_14_||_15_||_16_||_17_||_18_||_19_||_20_||_21_||_22_||_23_||_24_||_25_||_26_||_27_||_28_|
+0x60 = push one byte onto the stack
+0x52 = push into memory
+0x34 = Callvalue of ether in transaction
+0x80 = duplicate
+0x15 = iszero 
+0x57 = jump location 0x0f is stack location is 0x5b
+0x5b = jump destination
+0x50 = Pop item from the stack, stack now empty
+0x39 = codecopy, stack[0] - memory offset to write 
+                 stack[1] - bytecode offset to read from 
+                 stack[2] - length of bytecode to copy 
+0xf3 = return output data - bytecode 
+0xfe = invalid / end of initalization code               
+
+// STACK
+0x00
+0x45
+0x00
+0x1d - copy from 29 
+0x45 
+0x45 
+0x0f = stack[0]
+0x01 = stack[1]           stack[1]==1 then jump stack[0]
+0x00 = stack[2]
+        0x40
+pushing 0x80 onto the stack 
+
+
+
+// MEMORY 
+
+Memory [0x40] = 0x80 // free memory pointer 
+memory [0x00] = code to copy = bytecode

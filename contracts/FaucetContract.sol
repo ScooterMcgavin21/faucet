@@ -8,9 +8,25 @@ contract Faucet {
     receive() external payable {}
     //const instance = await Faucet.deployed()
     function addFunds() external payable {}
+    // view - function will not alter the storage state
+    // pure - wont even read the storage state
+
+    // Transactions(generate state changes) and require gas fee
+    // read only call, no gas fee
+    function justTesting() external pure returns(uint) {
+        return 2+2;
+    }
+
+    // JSON-RPC http calls to talk to node on the network 
+    
+    
+    
+}
 
     // Block info
-    // Nonce - a hash that when combined with the minHash proofs that
-    // the block has gone through proof of work(POW)
-    // 8 bytes => 64 bits
-}
+        // Nonce - a hash that when combined with the minHash proofs that
+        // the block has gone through proof of work(POW)
+        // 8 bytes => 64 bits
+
+        // truffle console
+        // const instance = await Faucet.deployed()

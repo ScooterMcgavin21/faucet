@@ -1,3 +1,4 @@
+import detectEthereumProvider from '@metamask/detect-provider';
 import { useEffect, useState } from "react";
 import Web3 from 'web3';
 import './App.css';
@@ -18,38 +19,43 @@ function App() {
   useEffect(() => {
     const loadProvider = async () => {
       //debugger
-      let provider = null;
+      const provider = await detectEthereumProvider()
 
-      if (window.ethereum) {
-        provider = window.ethereum;
+      if (provider) {
+        provider.request({method: 'eth_requestAccounts'})
+        setWeb3Api({
+          web3: new Web3(provider),
+          provider
+        })
+      } else {
+        console.error('Please install Metamask')
+      }
+    }
+    loadProvider() 
+  }, [])
+      // if (window.ethereum) {
+      //   provider = window.ethereum;
         
-        //request metamask to connect automatically
-        try {
-          await provider.enable();
-        } catch {
-          console.error('User denied acccounts access')
-        }
-      }
-      else if(window.web3) {
-        // legacy metamask
-        provider = window.web3.currentProvider
-      }
-      else if (!process.env.production) {
-        // ganashe
-        provider = new Web3.providers.HttpProvider('http://localhost:7545')
-      }
+      //   //request metamask to connect automatically
+      //   try {
+      //     await provider.request({method: "eth_requestAccounts"})
+      //   } catch {
+      //     console.error('User denied acccounts access')
+      //   }
+      // }
+      // else if(window.web3) {
+      //   // legacy metamask
+      //   provider = window.web3.currentProvider
+      // }
+      // else if (!process.env.production) {
+      //   // ganashe
+      //   provider = new Web3.providers.HttpProvider('http://localhost:7545')
+      // }
       // new instance of web3
-      setWeb3Api({
-        web3: new Web3(provider),
-        provider
-      })
+      
 
       // console.log(window.web3)
       // console.log(window.ethereum)
-    }
-    loadProvider() 
-  }, [web3Api])
-
   //console.log(web3Api.web3);
 
   /** 
@@ -64,9 +70,10 @@ function App() {
       //debugger
       setAccount(accounts[0])
     }
-
     web3Api.web3 && getAccount()
-  }, [])
+  }, [web3Api.web3])
+
+  
   return (
     <>
       <div className='faucet-wrapper'>

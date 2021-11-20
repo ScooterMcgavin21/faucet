@@ -7,7 +7,7 @@ pragma solidity >=0.4.22 <0.9.0;
         // instance.addFunds({from: accounts[0], value: "2000000000000000000"})
         //instance.addFunds({from: accounts[1], value: "2000000000000000000"})
 
-        // instance.withdraw("1000000000000000000", {from: accounts[1]})
+        // instance.withdraw("500000000000000000", {from: accounts[1]})
 
         // instance.getFunderAtIndex(0)
         // instance.getAllFunders()
@@ -19,6 +19,16 @@ contract Faucet {
     mapping(uint => address) private lutFunders;
     // private -> can be accesible only within the smart contract
     // internal -> can be accesible within smart contract and also derived smart contract
+
+    /** Modifer */
+    modifier limitWithdraw(uint withdrawAmount) {
+        require(
+            withdrawAmount <= 100000000000000000,
+            "Cannot Withdraw more than 0.1 ether"
+        );
+        _; // parameter sent to limitwithdraw which is using modifier to execute payable withdrawAmount
+    }
+
     receive() external payable {}
     
     function addFunds() external payable {
@@ -33,9 +43,9 @@ contract Faucet {
         }
     }
 
-    function withdraw(uint withdrawAmount) external {
+    function withdraw(uint withdrawAmount) external limitWithdraw(withdrawAmount) {
         // require condition must be met in order to proceed to the next line
-        require(withdrawAmount <= 100000000000000000, "Cannot Withdraw more than 0.1 ether");
+        //require(withdrawAmount <= 100000000000000000, "Cannot Withdraw more than 0.1 ether");
         payable(msg.sender).transfer(withdrawAmount);
         //check withdraw amount
         // if(withdrawAmount < 1000000000000000000) {

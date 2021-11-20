@@ -2,24 +2,26 @@
 pragma solidity >=0.4.22 <0.9.0;
 
 contract Faucet {
-    // storage variables
-    address[] private funders;
+    uint public numOfFunders;
+    mapping(uint => address) private funders;
     // private -> can be accesible only within the smart contract
     // internal -> can be accesible within smart contract and also derived smart contract
     receive() external payable {}
     
     function addFunds() external payable {
-        funders.push(msg.sender);
+        uint index = numOfFunders++;
+        funders[index] = msg.sender;
     }
     
-    function getAllFunders() public view returns(address[] memory) {
-        return funders;
-    }
+    // function getAllFunders() public view returns(address[] memory) {
+    //     return funders;
+    // }
 
     // function to get funder at a specific index
     function getFunderAtIndex(uint8 index) external view returns(address) {
-        address[] memory _funders = getAllFunders();
-        return _funders[index];
+        // address[] memory _funders = getAllFunders();
+        // return _funders[index];
+        return funders[index];
     } 
 }
     // recieve function called when you make a transaction tx without a specified name

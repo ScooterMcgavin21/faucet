@@ -3,12 +3,14 @@ pragma solidity >=0.4.22 <0.9.0;
         // truffle console
         // const instance = await Faucet.deployed()
         // instance.addFunds({from: accounts[0], value: "200000000"})
+        //instance.addFunds({from: accounts[1], value: "200000000"})
         // instance.getFunderAtIndex(0)
         // instance.getAllFunders()
 
 contract Faucet {
     uint public numOfFunders;
     mapping(address => bool) private funders;
+    mapping(uint => address) private lutFunders;
     // private -> can be accesible only within the smart contract
     // internal -> can be accesible within smart contract and also derived smart contract
     receive() external payable {}
@@ -19,30 +21,31 @@ contract Faucet {
         address funder = msg.sender;
         // not in funders mapping, no key
         if (!funders[funder]) {
-            numOfFunders++;
+            uint index = numOfFunders++;
             funders[funder] = true;
+            lutFunders[numOfFunders] = funder;
         }
     }
 
-    // function getAllFunders() external view returns (address[] memory) {
-    //     address[] memory _funders = new address[](numOfFunders);
-    //     // loop to iterate numOfFunders
-    //     for (uint i = 0; i < numOfFunders; i++){
-    //         _funders[i] = funders[i];
-    //     }
-    //     return _funders;
-    // }
+    function getAllFunders() external view returns (address[] memory) {
+        address[] memory _funders = new address[](numOfFunders);
+        // loop to iterate numOfFunders
+        for (uint i = 0; i < numOfFunders; i++){
+            _funders[i] = lutFunders[i];
+        }
+        return _funders;
+    }
     
-    // // function getAllFunders() public view returns(address[] memory) {
-    // //     return funders;
-    // // }
+    // function getAllFunders() public view returns(address[] memory) {
+    //     return funders;
+    // }
 
-    // // function to get funder at a specific index
-    // function getFunderAtIndex(uint8 index) external view returns(address) {
-    //     // address[] memory _funders = getAllFunders();
-    //     // return _funders[index];
-    //     return funders[index];
-    // } 
+    // function to get funder at a specific index
+    function getFunderAtIndex(uint8 index) external view returns(address) {
+        // address[] memory _funders = getAllFunders();
+        // return _funders[index];
+        return lutFunders[index];
+    } 
 }
     // recieve function called when you make a transaction tx without a specified name
     // External function are part of the ccontract interface, i.e can be called via contracts and other tx

@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
+import "./Owned.sol";
         // truffle console
 
         // const instance = await Faucet.deployed()
@@ -13,26 +14,18 @@ pragma solidity >=0.4.22 <0.9.0;
         // instance.getAllFunders()
         // instance.test1({from: acconts;[0], value: ""})
 
-contract Faucet {
+contract Faucet is Owned {
     uint public numOfFunders;
-    address public owner;
+    
 
     mapping(address => bool) private funders;
     mapping(uint => address) private lutFunders;
     // private -> can be accesible only within the smart contract
     // internal -> can be accesible within smart contract and also derived smart contract
 
-    constructor() {
-        owner = msg.sender;
-    }
+    
 
-    modifier onlyOwner {
-        require(
-            msg.sender == owner,
-            "only owner can call this function"
-        );
-        _;
-    }
+    
 
     /** Modifer */
     modifier limitWithdraw(uint withdrawAmount) {

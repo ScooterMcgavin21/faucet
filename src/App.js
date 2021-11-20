@@ -1,9 +1,10 @@
 import detectEthereumProvider from '@metamask/detect-provider';
 import { useEffect, useState } from "react";
-import Web3 from 'web3';
-import './App.css';
+import Web3 from "web3";
+import "./App.css";
+
+
 function App() {
-  // states
   const [web3Api, setWeb3Api] = useState({
     provider: null,
     web3: null
@@ -18,46 +19,20 @@ function App() {
    */
   useEffect(() => {
     const loadProvider = async () => {
-      //debugger
       const provider = await detectEthereumProvider()
 
       if (provider) {
-        provider.request({method: 'eth_requestAccounts'})
         setWeb3Api({
           web3: new Web3(provider),
           provider
         })
       } else {
-        console.error('Please install Metamask')
+        console.error("Please, install Metamask.")
       }
     }
-    loadProvider() 
+
+    loadProvider()
   }, [])
-      // if (window.ethereum) {
-      //   provider = window.ethereum;
-        
-      //   //request metamask to connect automatically
-      //   try {
-      //     await provider.request({method: "eth_requestAccounts"})
-      //   } catch {
-      //     console.error('User denied acccounts access')
-      //   }
-      // }
-      // else if(window.web3) {
-      //   // legacy metamask
-      //   provider = window.web3.currentProvider
-      // }
-      // else if (!process.env.production) {
-      //   // ganashe
-      //   provider = new Web3.providers.HttpProvider('http://localhost:7545')
-      // }
-      // new instance of web3
-      
-
-      // console.log(window.web3)
-      // console.log(window.ethereum)
-  //console.log(web3Api.web3);
-
   /** 
    * get accounts only when web3Api is loaded
    * function called from ethApi to get acccounts
@@ -67,28 +42,39 @@ function App() {
   useEffect(() => {
     const getAccount = async () => {
       const accounts = await web3Api.web3.eth.getAccounts()
-      //debugger
       setAccount(accounts[0])
     }
+
     web3Api.web3 && getAccount()
   }, [web3Api.web3])
 
-  
   return (
     <>
-      <div className='faucet-wrapper'>
-        <div className='faucet'>
-          <span>
-            <strong>Account:</strong>
-          </span>
-          <h1>
-            { account ? account : 'not connected' }
-          </h1>
-          <div className='balance-view is size-2'>
+      <div className="faucet-wrapper">
+        <div className="faucet">
+          <div className="is-flex is-align-items-center">
+            <span>
+              <strong className="mr-2">Account: </strong>
+            </span>
+              { account ?
+                <div>{account}</div> :
+                <button
+                  className="button is-small"
+                  onClick={() =>
+                    web3Api.provider.request({method: "eth_requestAccounts"}
+                  )}
+                >
+                  Connect Wallet
+                </button>
+              }
+          </div>
+          <div className="balance-view is-size-2 my-4">
             Current Balance: <strong>10</strong> ETH
           </div>
-          <button className='btn mr-2'>Donate</button>
-          <button className='btn'>Withdraw</button>
+          <button
+            className="button is-link mr-2">Donate</button>
+          <button
+            className="button is-primary">Withdraw</button>
         </div>
       </div>
     </>
@@ -96,5 +82,3 @@ function App() {
 }
 
 export default App;
-
-

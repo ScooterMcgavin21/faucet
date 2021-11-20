@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
 import "./Owned.sol";
+import "./Logger.sol";
         // truffle console
 
         // const instance = await Faucet.deployed()
@@ -14,7 +15,7 @@ import "./Owned.sol";
         // instance.getAllFunders()
         // instance.test1({from: acconts;[0], value: ""})
 
-contract Faucet is Owned {
+contract Faucet is Owned, Logger {
     uint public numOfFunders;
     
 
@@ -37,6 +38,10 @@ contract Faucet is Owned {
     }
 
     receive() external payable {}
+
+    function emitLog() public override pure returns(bytes32) {
+        return "Hello World"; // hex: 0x48656c6c6f20576f726c64000000000000000000000000000000000000000000
+    }
 
     // function transferOwnerShip(address newOwner) external onlyOwner {
     //     owner = newOwner;

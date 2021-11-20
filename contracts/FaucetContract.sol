@@ -12,6 +12,15 @@ contract Faucet {
         uint index = numOfFunders++;
         funders[index] = msg.sender;
     }
+
+    function getAllFunders() external view returns (address[] memory) {
+        address[] memory _funders = new address[](numOfFunders);
+        // loop to iterate numOfFunders
+        for (uint i = 0; i < numOfFunders; i++){
+            _funders[i] = funders[i];
+        }
+        return _funders;
+    }
     
     // function getAllFunders() public view returns(address[] memory) {
     //     return funders;
@@ -33,7 +42,9 @@ contract Faucet {
 
         // truffle console
         // const instance = await Faucet.deployed()
-        // instance.addFunds({from: accounts[0], value: "2"})
+        // instance.addFunds({from: accounts[0], value: "200000000"})
+        // instance.getFunderAtIndex(0)
+        // instance.getAllFunders()
 
     // view - function will not alter the storage state
     // pure - wont even read the storage state

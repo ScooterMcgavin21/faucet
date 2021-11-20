@@ -1,11 +1,17 @@
 // SPDX-License-Identifier: MIT
 pragma solidity >=0.4.22 <0.9.0;
         // truffle console
+
         // const instance = await Faucet.deployed()
-        // instance.addFunds({from: accounts[0], value: "200000000"})
-        //instance.addFunds({from: accounts[1], value: "200000000"})
+
+        // instance.addFunds({from: accounts[0], value: "2000000000000000000"})
+        //instance.addFunds({from: accounts[1], value: "2000000000000000000"})
+
+        // instance.withdraw("1000000000000000000", {from: accounts[1]})
+
         // instance.getFunderAtIndex(0)
         // instance.getAllFunders()
+        // 
 
 contract Faucet {
     uint public numOfFunders;
@@ -28,10 +34,13 @@ contract Faucet {
     }
 
     function withdraw(uint withdrawAmount) external {
-        // check withdraw amount
-        if(withdrawAmount < 1000000000000000000) {
-            payable(msg.sender).transfer(withdrawAmount);
-        }
+        // require condition must be met in order to proceed to the next line
+        require(withdrawAmount <= 100000000000000000, "Cannot Withdraw more than 0.1 ether");
+        payable(msg.sender).transfer(withdrawAmount);
+        //check withdraw amount
+        // if(withdrawAmount < 1000000000000000000) {
+        //     payable(msg.sender).transfer(withdrawAmount);
+        // }
     }
 
     function getAllFunders() external view returns (address[] memory) {

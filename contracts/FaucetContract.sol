@@ -11,14 +11,28 @@ pragma solidity >=0.4.22 <0.9.0;
 
         // instance.getFunderAtIndex(0)
         // instance.getAllFunders()
-        // 
+        // instance.test1({from: acconts;[0], value: ""})
 
 contract Faucet {
     uint public numOfFunders;
+    address public owner;
+
     mapping(address => bool) private funders;
     mapping(uint => address) private lutFunders;
     // private -> can be accesible only within the smart contract
     // internal -> can be accesible within smart contract and also derived smart contract
+
+    constructor() {
+        owner = msg.sender;
+    }
+
+    modifier onlyOwner {
+        require(
+            msg.sender == owner,
+            "only owner can call this function"
+        );
+        _;
+    }
 
     /** Modifer */
     modifier limitWithdraw(uint withdrawAmount) {
@@ -30,6 +44,10 @@ contract Faucet {
     }
 
     receive() external payable {}
+
+    // function transferOwnerShip(address newOwner) external onlyOwner {
+    //     owner = newOwner;
+    // }
     
     function addFunds() external payable {
         // uint index = numOfFunders++;
@@ -43,6 +61,14 @@ contract Faucet {
         }
     }
 
+    function test1() external onlyOwner {
+        // managing stuff that only admin should have access to
+
+    }
+    function test2() external onlyOwner {
+        // managing stuff that only admin should have access to
+        
+    }
     function withdraw(uint withdrawAmount) external limitWithdraw(withdrawAmount) {
         // require condition must be met in order to proceed to the next line
         //require(withdrawAmount <= 100000000000000000, "Cannot Withdraw more than 0.1 ether");

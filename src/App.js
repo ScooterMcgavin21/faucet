@@ -20,7 +20,15 @@ function App() {
   const reloadEffect = useCallback(() => reload(!shouldReload), [shouldReload])
   // reexucted whenever account changes
   const setAccountListener = (provider) => {
-    provider.on('accountsChanged', (accounts) => setAccount(accounts[0]))
+    provider.on('accountsChanged', _ => window.location.reload())
+    // provider.on('accountsChanged', (accounts) => setAccount(accounts[0]))
+    // provider._jsonRpcConnection.events.on('notification', (payload) => {
+    //   const { method } = payload
+    //   // when you lock your metamask account / signout
+    //   if (method === 'metamask_unlockStateChanged') {
+    //     setAccount(null)
+    //   }
+    // })
   }
   /**
    * with metamask we have an access to window.ethereum & to window.web3
@@ -124,12 +132,14 @@ function App() {
             Current Balance: <strong>{balance}</strong> ETH
           </div>
           <button
+            disabled={!account}
             onClick={addFunds}
             className="button is-link mr-2"
           >
               Donate: 1 Eth
           </button>
           <button
+            disabled={!account}
             onClick={withdraw}
             className="button is-primary">Withdraw</button>
         </div>

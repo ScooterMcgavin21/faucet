@@ -13,6 +13,11 @@ function App() {
   
   const [balance, setBalance] = useState(null)
   const [account, setAccount] = useState(null)
+  const [shouldReload, reload] = useState(false)
+
+  
+  // Helper function to toggle false true
+  const reloadEffect = () => reload(!shouldReload)
   /**
    * with metamask we have an access to window.ethereum & to window.web3
    * metamask injects a global API into website
@@ -47,7 +52,7 @@ function App() {
       setBalance(web3.utils.fromWei(balance, 'ether'))
     }
     web3Api.contract && loadBalance()
-  }, [web3Api])
+  }, [web3Api, shouldReload])
   /** 
    * get accounts only when web3Api is loaded
    * function called from ethApi to get acccounts
@@ -65,7 +70,7 @@ function App() {
 
   /**
    * Add funds function
-   * usecallback 
+   * call via browser 
    */
   const addFunds = useCallback(async () => {
     const { contract, web3 } = web3Api
@@ -73,6 +78,9 @@ function App() {
       from: account,
       value: web3.utils.toWei('1', 'ether')
     })
+    // reload browser
+    //window.location.reload()
+    reloadEffect()
   }, [web3Api, account])
 
   return (

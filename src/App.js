@@ -16,8 +16,8 @@ function App() {
   const [shouldReload, reload] = useState(false)
 
   
-  // Helper function to toggle false true
-  const reloadEffect = () => reload(!shouldReload)
+  // wrap reloadEffect in a callback function to toggle false true and reload onlywhen value changes
+  const reloadEffect = useCallback(() => reload(!shouldReload), [shouldReload])
   /**
    * with metamask we have an access to window.ethereum & to window.web3
    * metamask injects a global API into website
@@ -81,7 +81,19 @@ function App() {
     // reload browser
     //window.location.reload()
     reloadEffect()
-  }, [web3Api, account])
+  }, [web3Api, account, reloadEffect])
+
+  /**
+   * Withdraw funds function 
+   */
+  const withdraw = async () => {
+    const { contract, web3 } = web3Api
+    const withdrawAmount = web3.utils.toWei('0.1', 'ether')
+    await contract.withdraw(withdrawAmount,{
+      from: account
+    })
+    reloadEffect()
+  }
 
   return (
     <>
@@ -113,6 +125,7 @@ function App() {
               Donate: 1 Eth
           </button>
           <button
+            onClick={withdraw}
             className="button is-primary">Withdraw</button>
         </div>
       </div>

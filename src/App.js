@@ -18,6 +18,10 @@ function App() {
   
   // wrap reloadEffect in a callback function to toggle false true and reload onlywhen value changes
   const reloadEffect = useCallback(() => reload(!shouldReload), [shouldReload])
+  // reexucted whenever account changes
+  const setAccountListener = (provider) => {
+    provider.on('accountsChanged', (accounts) => setAccount(accounts[0]))
+  }
   /**
    * with metamask we have an access to window.ethereum & to window.web3
    * metamask injects a global API into website
@@ -29,6 +33,7 @@ function App() {
       const provider = await detectEthereumProvider()
       const contract = await loadContract('Faucet', provider)
       if (provider) {
+        setAccountListener(provider)
         setWeb3Api({
           web3: new Web3(provider),
           provider,

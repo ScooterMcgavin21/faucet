@@ -57,7 +57,7 @@ contract Faucet is Owned, Logger, IFaucet {
         if (!funders[funder]) {
             uint index = numOfFunders++;
             funders[funder] = true;
-            lutFunders[numOfFunders] = funder;
+            lutFunders[index] = funder;
         }
     }
 

@@ -24,6 +24,7 @@ function App() {
   // reexucted whenever account changes
   const setAccountListener = (provider) => {
     provider.on('accountsChanged', _ => window.location.reload())
+    provider.on('chainChanged', _ => window.location.reload())
     // provider.on('accountsChanged', (accounts) => setAccount(accounts[0]))
     // provider._jsonRpcConnection.events.on('notification', (payload) => {
     //   const { method } = payload
@@ -165,12 +166,12 @@ function App() {
             onClick={addFunds}
             className="button is-link mr-2"
           >
-              Donate: 1 Eth
+              Donate: 1 eth
           </button>
           <button
             disabled={!canConnectToContract}
             onClick={withdraw}
-            className="button is-primary">Withdraw</button>
+            className="button is-primary">Withdraw 0.1 eth</button>
         </div>
       </div>
     </>

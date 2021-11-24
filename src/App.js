@@ -39,8 +39,9 @@ function App() {
   useEffect(() => {
     const loadProvider = async () => {
       const provider = await detectEthereumProvider()
-      const contract = await loadContract('Faucet', provider)
+      
       if (provider) {
+        const contract = await loadContract('Faucet', provider)
         setAccountListener(provider)
         setWeb3Api({
           web3: new Web3(provider),
@@ -118,6 +119,15 @@ function App() {
             </span>
               { account ?
                 <div>{account}</div> :
+                !web3Api.provider ? 
+                <>
+                  <div className='notification is-warning is-size-6 is-rounded'>
+                    Wallet is not dectected! {` `}
+                    <a target='_blank' href='https://docs.metamask.io'>
+                      Install Metamaask
+                    </a>
+                  </div>
+                </> :
                 <button
                   className="button is-small"
                   onClick={() =>

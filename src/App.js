@@ -179,3 +179,12 @@ function App() {
 }
 
 export default App;
+
+// Private key 32 byte 
+//2922cfafcc980449731a4651b1f0bdca245a2475b164766dcde5f387c8d58b61
+
+// public key 64vyte number uncompressed
+//041428eb7e3a6d6520ee1d30230b009fad14b98b05d53d2ef5297054cc40d68ad8f14c3a1ec6fb3dd9603611a461a93a801c7d98618f4e327836cb81a12ac648c6
+
+// public key32byte # compressed
+//021428eb7e3a6d6520ee1d30230b009fad14b98b05d53d2ef5297054cc40d68ad8
